@@ -1,0 +1,70 @@
+{
+  "name": "sda-sistema-alerta",
+  "version": "2.0.0",
+  "author": "Oscar Alberto Valenzuela Osuna",
+  "license": "MIT",
+  "description": "Sistema de Administración de Documentos para el Departamento de Guarderías IMSS Sinaloa",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "electron": "electron .",
+    "build:win": "npm run build:frontend && electron-builder --win",
+    "seed": "node server/db/seed.js",
+    "init-db": "node server/db/init.js",
+    "migrate-cvmsg": "node server/scripts/migrate-cvmsg.js",
+    "seed:extintores": "node server/db/seed-extintores.js",
+    "service:install": "node server/scripts/service-install.js",
+    "service:uninstall": "node server/scripts/service-uninstall.js"
+  },
+  "build": {
+    "appId": "mx.gob.imss.sda.alerta",
+    "productName": "SDA Sistema de Alerta",
+    "asar": false,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "splash.html",
+      "SDA.png",
+      "server/**/*",
+      "frontend/dist/**/*",
+      "node_modules/**/*",
+      ".env",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.1",
+    "express-rate-limit": "^8.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "node-windows": "^1.0.0-beta.8",
+    "nodemailer": "^6.10.1",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "electron": "^41.1.1",
+    "electron-builder": "^26.8.1"
+  }
+}

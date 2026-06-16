@@ -1,0 +1,195 @@
+<!-- 
+// ============================================================
+// PROYECTO  : SDA (Sistema de Administración de Documentos)
+// ARCHIVO   : splash.html
+// MÓDULO    : Interfaz de Carga (Splash)
+// PROPÓSITO : Pantalla de bienvenida mostrada durante la inicialización del sistema.
+// AUTOR     : Oscar Alberto Valenzuela Osuna
+// ============================================================
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a1a0f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    user-select: none;
+    color: #fff;
+  }
+  .glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,255,100,0.08) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+  .icon-wrapper {
+    position: relative;
+    width: 120px; height: 120px;
+    margin-bottom: 40px;
+  }
+  .icon {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    animation: bounceIn 1s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+  }
+  .icon img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+  }
+  @keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 1; }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+  .spinner {
+    position: absolute;
+    inset: -15px;
+    border-radius: 45px;
+    border: 2px solid transparent;
+    border-top-color: rgba(0,200,80,0.4);
+    animation: rotate 2s linear infinite;
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 8px;
+    margin-bottom: 4px;
+    text-shadow: 0 0 30px rgba(0,200,80,0.5);
+    background: linear-gradient(to bottom, #fff, #99fbc3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .loader-box {
+    position: absolute;
+    bottom: 60px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  .status-text {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    height: 15px;
+    transition: all 0.3s ease;
+  }
+  .progress-bg {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar {
+    position: absolute;
+    left: 0; top: 0; height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00c850, #7fff00);
+    box-shadow: 0 0 15px rgba(0,200,80,0.6);
+    border-radius: 10px;
+    animation: fillProgress 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes fillProgress {
+    0% { width: 0%; }
+    20% { width: 10%; }
+    40% { width: 45%; }
+    60% { width: 70%; }
+    80% { width: 92%; }
+    100% { width: 98%; }
+  }
+  .footer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="container">
+    <div class="icon-wrapper">
+      <div class="spinner"></div>
+      <div class="icon">
+        <img src="SDA.png" alt="Logo">
+      </div>
+    </div>
+    <div class="title">SDA</div>
+    <div class="subtitle">IMSS OOAD SINALOA</div>
+  </div>
+  
+  <div class="loader-box">
+    <div class="status-text" id="status">Cargando módulos...</div>
+    <div class="progress-bg">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  
+  <div class="footer">Sistema de Administración (SDA) v1.0</div>
+
+  <script>
+    const statuses = [
+      'Iniciando servicios...',
+      'Cargando base de datos...',
+      'Verificando certificados...',
+      'Sincronizando expedientes...',
+      'Optimizando interfaz...',
+      'Casi listo...'
+    ];
+    let step = 0;
+    const statusEl = document.getElementById('status');
+    
+    function updateStatus() {
+      if (step < statuses.length) {
+        statusEl.style.opacity = 0;
+        setTimeout(() => {
+          statusEl.textContent = statuses[step++];
+          statusEl.style.opacity = 1;
+        }, 300);
+      }
+    }
+
+    setInterval(updateStatus, 1200);
+    updateStatus();
+  </script>
+</body>
+</html>
